@@ -135,8 +135,8 @@ for_module(ModuleName, IncludePaths, Macros) when is_list(ModuleName) ->
   for_file(ModuleName, IncludePaths, Macros);
 for_module(ModuleName, IncludePaths, Macros) when is_atom(ModuleName) ->
   [_Exports, _Imports, _Attributes,
-   {compile, [_Options, _Version, _Time, {source, Path}]}] =
-    ModuleName:module_info(),
+   {compile, [_Options, _Version, {source, Path}]}, _Md5]    =
+    mnesia:module_info(),
   case for_file(Path, IncludePaths, Macros) of
     {ok, _Mod} = Res -> Res;
     _Error           -> get_module_forms(ModuleName)

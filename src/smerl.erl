@@ -691,10 +691,10 @@ get_forms(Module, Path) ->
     {ok, {_, [{abstract_code, {raw_abstract_v1, Forms}}]}} ->
       {ok, Forms};
     _Err ->
-      case filename:find_src(Module, [{"ebin", "src"}]) of
+      case filelib:find_source(Module, Path, [{"ebin", "src"}]) of
         {error, _} = Err ->
           get_forms_from_binary(Module, Err);
-        {SrcPath, _} ->
+        {ok, SrcPath} ->
           Filename = SrcPath ++ ".erl",
           epp:parse_file(Filename, [filename:dirname(Filename)], [])
       end
